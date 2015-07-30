@@ -1,0 +1,6 @@
+#ifndef VERSION_HPP
+#define VERSION_HPP
+
+static const char git_revision[] = "@GIT_REVISION@";
+
+#endif
