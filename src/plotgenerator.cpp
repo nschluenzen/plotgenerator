@@ -2,6 +2,7 @@
 #include <tuple>
 #include <string>
 #include <fstream>
+#include <iostream>
 #include "sorter.hpp"
 #include "pyplot.hpp"
 
@@ -19,9 +20,8 @@ std::vector<std::string> LoadmRNAs()
   return mRNAs;
 }
 
-main()
-{ 
-  auto mRNAs = LoadmRNAs();
+void CreateDataSet(std::vector<std::string> mRNAs)
+{
   sorter sort(mRNAs);
   auto mRNAData_nativ = sort.getRNA_Data("input/nativ");
   auto mRNAData_nativ2 = sort.getRNA_Data("input/nativ2");
@@ -48,8 +48,46 @@ main()
   sort.WriteRNA_Data(mRNAData_unten,"u1");
   sort.WriteRNA_Data(mRNAData_unten2,"u2");
   sort.WriteRNA_Data(mRNAData_unten3,"u3");
-  
-  pyplot pp(mRNAs);
-  
-  pp.plot();
+}
+
+void PrintHeader()
+{
+  std::cout << "------------------------------------------------------------------------" << std::endl;
+  std::cout << "----------------- Welcome to the awesome plot creator! -----------------" << std::endl;
+  std::cout << "------------------------------------------------------------------------" << std::endl;
+}
+
+void PrintQuestion()
+{
+  std::cout << "choose option: ('load' to load data / 'plot' to create plots / 'exit' to exit)" << std::endl;
+}
+
+main()
+{ 
+  auto mRNAs = LoadmRNAs();
+  PrintHeader();
+  bool loop = true;
+  while (loop)
+  {
+    PrintQuestion();
+    std::string answer;
+    std::cin >> answer;
+    if (answer == "load")
+    {
+      CreateDataSet(mRNAs);
+    }
+    else if (answer == "plot")
+    {
+      pyplot pp(mRNAs);
+      pp.plot();
+    }
+    else if (answer == "exit")
+    {
+      break;
+    }
+    else
+    {
+      std::cerr << "Error: \"" << answer << "\" is not an option" << std::endl;
+    }
+  }
 }

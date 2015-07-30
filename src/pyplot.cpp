@@ -112,7 +112,7 @@ std::vector<std::string> pyplot::ChooseIfNeeded(const std::vector<std::string> &
         {
             std::vector<std::string> Choices;
             bool isCorrect = true;
-            std::cout << "Available choices are (\"0\" for exit, enter for default): " << std::endl;
+            std::cout << "Available choices are (\"0\" for exit, 'd' for default): " << std::endl;
             std::vector <int> SelectionInts;
             for (int i = 0; i < PossibleChoices.size(); ++i)
             {
@@ -123,8 +123,8 @@ std::vector<std::string> pyplot::ChooseIfNeeded(const std::vector<std::string> &
                 std::cout << " " << std::endl;
             }
             std::cout << question << std::endl;
-            std::getline(std::cin, Choice);
-            if (Choice == "")
+            std::cin >> Choice;
+            if (Choice == "d")
             {
                 return Defaults;
             }
@@ -296,6 +296,12 @@ void pyplot::CreatePlotFile()
     
   auto chosenmRNAs = ChooseIfNeeded(mRNAs,"which plots should be created?",mRNAs,0);
   
+  std::cout << "Create plots for:";
+  for (auto chosenmRNA : chosenmRNAs)
+  {
+    std::cout << " " << chosenmRNA;
+  }
+  std::cout << std::endl;
   for (auto mRNA : chosenmRNAs)
   {
     python << "CreateMultiPlot('" << mRNA << "')" << std::endl;
