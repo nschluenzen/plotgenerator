@@ -52,14 +52,14 @@ void CreateDataSet(std::vector<std::string> mRNAs)
 
 void PrintHeader()
 {
-  std::cout << "------------------------------------------------------------------------\n";
-  std::cout << "----------------- Welcome to the awesome plot creator! -----------------\n";
-  std::cout << "------------------------------------------------------------------------\n";
+  std::cout << "------------------------------------------------------------------------" << std::endl;
+  std::cout << "----------------- Welcome to the awesome plot creator! -----------------" << std::endl;
+  std::cout << "------------------------------------------------------------------------" << std::endl;
 }
 
 void PrintQuestion()
 {
-  std::cout << "choose option: ('load' to load data / 'plot' to create plots / 'exit' to exit)\n";
+  std::cout << "choose option: ('load' to load data / 'plot' to create plots / 'exit' to exit)" << std::endl;
 }
 
 main()
@@ -74,12 +74,12 @@ main()
     std::cin >> answer;
     if (answer == "load")
     {
-//       CreateDataSet(mRNAs);
+      CreateDataSet(mRNAs);
     }
     else if (answer == "plot")
     {
-//       pyplot pp(mRNAs);
-//       pp.plot();
+      pyplot pp(mRNAs);
+      pp.plot();
     }
     else if (answer == "exit")
     {
@@ -87,7 +87,7 @@ main()
     }
     else
     {
-//       std::cerr << "Error: \"" << answer << "\" is not an option\n";
+      std::cerr << "Error: \"" << answer << "\" is not an option" << std::endl;
     }
   }
 }
