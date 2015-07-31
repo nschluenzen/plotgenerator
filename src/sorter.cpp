@@ -2,15 +2,27 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <assert.h>
 
 sorter::sorter(std::vector< std::string > _mRNAs)
 {
   mRNAs = _mRNAs;
 }
 
+void sorter::printParserErrorDescription(std::exception& e, std::string file, int line, std::string functionArgument)
+{
+  printParserErrorDescription(e, file, line, functionArgument, functionArgument);
+}
+
+void sorter::printParserErrorDescription(std::exception& e, std::string file, int line, std::string functionArgument, std::string argument)
+{
+  std::cerr << "Error in " << file << "::" << line << "(" << functionArgument << "): " << e.what() << " of \"" << argument <<  "\" failed." << std::endl;
+}
+
 std::vector<std::pair<std::string,std::vector<double>>> sorter::getRNA_Data(std::string filename)
 {
   std::vector<std::pair<std::string,std::vector<double>>> mRNAData;
+  std::vector<std::pair<std::string,std::vector<double>>> EmptyData;
   
   for (int i = 0; i < mRNAs.size(); i++)
   {
@@ -30,11 +42,19 @@ std::vector<std::pair<std::string,std::vector<double>>> sorter::getRNA_Data(std:
       std::string value = line.substr(0,pos);
       std::stringstream stst(value);
       double loc_data;
-      if ( !(stst >> loc_data) )
+      try
       {
-	throw std::invalid_argument("Conversion to double failed.");
+	if ( !(stst >> loc_data) )
+	{
+	  throw std::invalid_argument("Conversion to double failed.");
+	}
+	Data.push_back(loc_data);
       }
-      Data.push_back(loc_data);
+      catch(std::exception& e)
+      {
+	printParserErrorDescription(e, __FILE__, __LINE__, value, value );
+        return EmptyData;
+      }
       line = line.substr(pos+1);
     }
     mRNAData.push_back(std::pair<std::string,std::vector<double>>(mRNAs[i],Data));

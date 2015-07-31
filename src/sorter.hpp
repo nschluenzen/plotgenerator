@@ -10,6 +10,8 @@ public:
   std::vector<std::pair<std::string,std::vector<double>>> getRNA_Data(std::string filename);
   void WriteRNA_Data(std::vector<std::pair<std::string,std::vector<double>>> mRNAData, std::string name);
 private:
+  void printParserErrorDescription(std::exception& e, std::string file, int line, std::string functionArgument);
+  void printParserErrorDescription(std::exception& e, std::string file, int line, std::string functionArgument, std::string argument);
   std::vector<std::string> mRNAs;
 };
 
