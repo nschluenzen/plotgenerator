@@ -29,5 +29,5 @@ include (CheckFMA)
 # CheckFMA()
 
 set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=address -fno-omit-frame-pointer")
-set(CMAKE_CXX_FLAGS "-std=c++11 -fdiagnostics-color=auto")
+set(CMAKE_CXX_FLAGS "-std=c++11 -D__NO_INLINE__ -static-libgcc -static-libstdc++")
 add_subdirectory(src)
