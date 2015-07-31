@@ -87,7 +87,7 @@ main()
     }
     else
     {
-      std::cerr << "Error: \"" << answer << "\" is not an option\n";
+//       std::cerr << "Error: \"" << answer << "\" is not an option\n";
     }
   }
 }
