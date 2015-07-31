@@ -5,6 +5,7 @@
 #include <iostream>
 #include <assert.h>
 #include <algorithm>
+#include <cstring>
 pyplot::pyplot(std::vector< std::string > _mRNAs)
 {
   mRNAs = _mRNAs;
