@@ -74,12 +74,12 @@ main()
     std::cin >> answer;
     if (answer == "load")
     {
-      CreateDataSet(mRNAs);
+//       CreateDataSet(mRNAs);
     }
     else if (answer == "plot")
     {
-      pyplot pp(mRNAs);
-      pp.plot();
+//       pyplot pp(mRNAs);
+//       pp.plot();
     }
     else if (answer == "exit")
     {
