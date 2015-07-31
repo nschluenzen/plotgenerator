@@ -47,7 +47,7 @@ std::vector<std::pair<std::string,std::vector<double>>> sorter::getRNA_Data(std:
     {
       std::cout << DataPoint << " ";
     }
-    std::cout << std::endl;
+    std::cout << "\n";
   }   
   
   return mRNAData;
@@ -61,7 +61,7 @@ void sorter::WriteRNA_Data(std::vector<std::pair<std::string,std::vector<double>
     datastream.open("meta/"+std::get<0>(Data)+"_"+name+".dat",std::ios::out);
     for (auto n1DData : std::get<1>(Data))
     {
-      datastream << n1DData << std::endl;
+      datastream << n1DData << "\n";
     }
     datastream.close();
   }
