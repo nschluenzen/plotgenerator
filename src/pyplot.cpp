@@ -1,5 +1,6 @@
 #include "pyplot.hpp"
 #include <fstream>
+#include <sstream>
 #include <stdio.h>
 #include <iostream>
 #include <assert.h>
@@ -39,7 +40,9 @@ std::vector<int> pyplot::ParseSelectionString(std::string SelectionString)
     {
       try
       {
-	ProjectIndex = std::stoi(SubSelectionString);
+	std::stringstream stst;
+	stst << SubSelectionString;
+	ProjectIndex = stst.str();
       }
       catch(std::exception& e)
       {
@@ -58,7 +61,9 @@ std::vector<int> pyplot::ParseSelectionString(std::string SelectionString)
       int last;
       try
       {
-	first = std::stoi(SubSelectionString.substr(0,found));
+	std::stringstream stst;
+	stst << SubSelectionString.substr(0,found);
+	first = stst.str();
       }
       catch(std::exception& e)
       {
@@ -67,7 +72,9 @@ std::vector<int> pyplot::ParseSelectionString(std::string SelectionString)
       }
       try
       {
-	last = std::stoi(SubSelectionString.substr(found+1,SubSelectionString.size()-found-1));
+	std::stringstream stst;
+	stst << SubSelectionString.substr(found+1,SubSelectionString.size()-found-1);
+	last = stst.str();
       }
       catch(std::exception& e)
       {

@@ -1,6 +1,7 @@
 #include "sorter.hpp"
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 sorter::sorter(std::vector< std::string > _mRNAs)
 {
@@ -27,7 +28,9 @@ std::vector<std::pair<std::string,std::vector<double>>> sorter::getRNA_Data(std:
     { 
       pos = line.find("\t");
       std::string value = line.substr(0,pos);
-      Data.push_back(std::stod(value));
+      std::stringstream stst;
+      stst << value;
+      Data.push_back(stst.str());
       line = line.substr(pos+1);
     }
     mRNAData.push_back(std::pair<std::string,std::vector<double>>(mRNAs[i],Data));
