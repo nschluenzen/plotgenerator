@@ -64,30 +64,30 @@ void PrintQuestion()
 
 main()
 { 
-  auto mRNAs = LoadmRNAs();
+//   auto mRNAs = LoadmRNAs();
   PrintHeader();
-  bool loop = true;
-  while (loop)
-  {
-    PrintQuestion();
-    std::string answer;
-    std::cin >> answer;
-    if (answer == "load")
-    {
-      CreateDataSet(mRNAs);
-    }
-    else if (answer == "plot")
-    {
-      pyplot pp(mRNAs);
-      pp.plot();
-    }
-    else if (answer == "exit")
-    {
-      break;
-    }
-    else
-    {
-      std::cerr << "Error: \"" << answer << "\" is not an option" << std::endl;
-    }
-  }
+//   bool loop = true;
+//   while (loop)
+//   {
+//     PrintQuestion();
+//     std::string answer;
+//     std::cin >> answer;
+//     if (answer == "load")
+//     {
+//       CreateDataSet(mRNAs);
+//     }
+//     else if (answer == "plot")
+//     {
+//       pyplot pp(mRNAs);
+//       pp.plot();
+//     }
+//     else if (answer == "exit")
+//     {
+//       break;
+//     }
+//     else
+//     {
+//       std::cerr << "Error: \"" << answer << "\" is not an option" << std::endl;
+//     }
+//   }
 }
