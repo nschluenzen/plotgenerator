@@ -26,9 +26,9 @@ void CreateDataSet(std::vector<std::string> mRNAs)
   auto mRNAData_nativ = sort.getRNA_Data("input/nativ");
   auto mRNAData_nativ2 = sort.getRNA_Data("input/nativ2");
   auto mRNAData_nativ3 = sort.getRNA_Data("input/nativ3");
-  auto mRNAData_primaer = sort.getRNA_Data("input/primär");
-  auto mRNAData_primaer2 = sort.getRNA_Data("input/primär2");
-  auto mRNAData_primaer3 = sort.getRNA_Data("input/primär3");
+  auto mRNAData_primaer = sort.getRNA_Data("input/primaer");
+  auto mRNAData_primaer2 = sort.getRNA_Data("input/primaer2");
+  auto mRNAData_primaer3 = sort.getRNA_Data("input/primaer3");
   auto mRNAData_oben = sort.getRNA_Data("input/oben");
   auto mRNAData_oben2 = sort.getRNA_Data("input/oben2");
   auto mRNAData_oben3 = sort.getRNA_Data("input/oben3");
