@@ -28,9 +28,13 @@ std::vector<std::pair<std::string,std::vector<double>>> sorter::getRNA_Data(std:
     { 
       pos = line.find("\t");
       std::string value = line.substr(0,pos);
-      std::stringstream stst;
-      stst << value;
-      Data.push_back(stst.str());
+      std::stringstream stst(value);
+      double loc_data;
+      if ( !(stst >> loc_data) )
+      {
+	throw std::invalid_argument("Conversion to double failed.");
+      }
+      Data.push_back(loc_data);
       line = line.substr(pos+1);
     }
     mRNAData.push_back(std::pair<std::string,std::vector<double>>(mRNAs[i],Data));

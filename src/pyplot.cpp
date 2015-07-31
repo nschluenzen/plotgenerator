@@ -40,9 +40,11 @@ std::vector<int> pyplot::ParseSelectionString(std::string SelectionString)
     {
       try
       {
-	std::stringstream stst;
-	stst << SubSelectionString;
-	ProjectIndex = stst.str();
+	std::stringstream stst(SubSelectionString);
+	if ( !(stst >> ProjectIndex) )
+	{
+	  throw std::invalid_argument("Conversion to int failed.");
+	}
       }
       catch(std::exception& e)
       {
@@ -61,9 +63,11 @@ std::vector<int> pyplot::ParseSelectionString(std::string SelectionString)
       int last;
       try
       {
-	std::stringstream stst;
-	stst << SubSelectionString.substr(0,found);
-	first = stst.str();
+	std::stringstream stst(SubSelectionString.substr(0,found));
+	if ( !(stst >> first) )
+	{
+	  throw std::invalid_argument("Conversion to int failed.");
+	}
       }
       catch(std::exception& e)
       {
@@ -72,9 +76,11 @@ std::vector<int> pyplot::ParseSelectionString(std::string SelectionString)
       }
       try
       {
-	std::stringstream stst;
-	stst << SubSelectionString.substr(found+1,SubSelectionString.size()-found-1);
-	last = stst.str();
+	std::stringstream stst(SubSelectionString.substr(found+1,SubSelectionString.size()-found-1));
+	if ( !(stst >> last) )
+	{
+	  throw std::invalid_argument("Conversion to int failed.");
+	}
       }
       catch(std::exception& e)
       {
