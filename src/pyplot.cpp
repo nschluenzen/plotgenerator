@@ -326,7 +326,7 @@ void pyplot::CreatePlotFile()
 void pyplot::plot()
 {
   CreatePlotFile();
-  
+  std::string remove = "del";
   system("python plot.py");
-  system("rm plot.py");
+  system(remove+" plot.py");
 }
