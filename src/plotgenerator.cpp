@@ -6,18 +6,31 @@
 #include "sorter.hpp"
 #include "pyplot.hpp"
 
-std::vector<std::string> LoadmRNAs()
+std::pair<std::vector<std::string>,std::vector<std::string>> LoadmRNAs()
 {
   std::vector<std::string> mRNAs;
+  std::vector<std::string> LegendPositions;
   std::fstream infile;
   infile.open("mRNAs.in",std::ios::in);
   std::string current_mRNA;
   while(std::getline(infile,current_mRNA))
   {
-    mRNAs.push_back(current_mRNA);
+    std::string current_mRNA_cp = current_mRNA;
+    std::size_t pos = 1;
+    std::vector<std::string> Values;
+    while (pos != std::string::npos)
+    { 
+      pos = current_mRNA_cp.find("\t");
+      std::string value = current_mRNA_cp.substr(0,pos);
+      Values.push_back(value);
+      current_mRNA_cp = current_mRNA_cp.substr(pos+1);
+    }
+    
+    mRNAs.push_back(Values[0]);
+    LegendPositions.push_back(Values[1]);
   }
   infile.close();
-  return mRNAs;
+  return std::pair<std::vector<std::string>,std::vector<std::string>>(mRNAs,LegendPositions);
 }
 
 void CreateDataSet(std::vector<std::string> mRNAs)
@@ -64,7 +77,8 @@ void PrintQuestion()
 
 main()
 { 
-  auto mRNAs = LoadmRNAs();
+  std::vector<std::string> mRNAs, LegendPositions;
+  std::tie(mRNAs, LegendPositions)= LoadmRNAs();
   PrintHeader();
   bool loop = true;
   while (loop)
@@ -78,7 +92,7 @@ main()
     }
     else if (answer == "plot")
     {
-      pyplot pp(mRNAs);
+      pyplot pp(mRNAs,LegendPositions);
       pp.plot();
     }
     else if (answer == "exit")

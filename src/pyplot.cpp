@@ -6,9 +6,11 @@
 #include <assert.h>
 #include <algorithm>
 #include <cstring>
-pyplot::pyplot(std::vector< std::string > _mRNAs)
+pyplot::pyplot(std::vector< std::string > _mRNAs, std::vector<std::string> _LegendPositions)
 {
   mRNAs = _mRNAs;
+  LegendPositions = _LegendPositions;
+  setLegendPositions();
 }
 
 void pyplot::printParserErrorDescription(std::exception& e, std::string file, int line, std::string functionArgument)
@@ -277,40 +279,50 @@ void pyplot::CreatePlotFile()
   python << "    else :" << std::endl;
   python << "        min3 = min(y_n3)" << std::endl;
   python << "    return min(min(min1,min2),min3)" << std::endl;
-  
-  python << "def CreateMultiPlot(Gene):" << std::endl;
-  python << "    rc('font', family='serif')" << std::endl;
-  python << "    rc('font', serif = 'cmr10')" << std::endl;
-  python << "    rc('font', size=12)" << std::endl;
-  python << "    rc('text', usetex=True)" << std::endl;
-  python << "    fig, ((ax1, ax2, ax3, ax4)) = plt.subplots(1,4, sharey=True)" << std::endl;
-  python << "    size = fig.get_size_inches()" << std::endl;
-  python << "    fig.set_size_inches((0.9*size[0],0.7*size[1]))" << std::endl;
-  python << "    plt.subplots_adjust(left=0.08,right=0.97,top=0.88,bottom=0.04)" << std::endl;
-  python << "    ax1.set_ylabel(r'$\\Delta$CT value')" << std::endl;
-  python << "    data_min1 = plotData(ax1,Gene,'native','n')" << std::endl;
-  python << "    data_min2 = plotData(ax2,Gene,'primary culture','p')" << std::endl;
-  python << "    data_min3 = plotData(ax3,Gene,'upper fraction','o')" << std::endl;
-  python << "    data_min4 = plotData(ax4,Gene,'lower fraction','u')" << std::endl;
-  python << "    if (data_min1 > 4):" << std::endl;
-  python << "        ax1.legend(fancybox=True,loc='upper center',ncol=1,fontsize=8,numpoints=1)" << std::endl;
-  python << "    else:" << std::endl;
-  python << "        if (data_min4 > 4):" << std::endl;
-  python << "            ax4.legend(fancybox=True,loc='upper center',ncol=1,fontsize=8,numpoints=1)" << std::endl;
-  python << "        else:" << std::endl;
-  python << "            if (data_min2 > 4):" << std::endl;
-  python << "                ax2.legend(fancybox=True,loc='upper center',ncol=1,fontsize=8,numpoints=1)" << std::endl;
-  python << "            else:" << std::endl;
-  python << "                if (data_min3 > 4):" << std::endl;
-  python << "                    ax3.legend(fancybox=True,loc='upper center',ncol=1,fontsize=8,numpoints=1)" << std::endl;
-  python << "                else:" << std::endl;
-  python << "                    ax1.legend(fancybox=True,loc='best',ncol=1,fontsize=8,numpoints=1)" << std::endl;
-  python << "    ax1.set_ylim(ax1.get_ylim()[::-1])" << std::endl;
-  python << "    plt.savefig('output/'+Gene+'.pdf')" << std::endl;
+  for (int i=0; i<mRNAs.size(); i++)
+  {
+    std::cout << LegendPositions[i] << std::endl;
+    python << "def CreateMultiPlot_" << i << "(Gene):" << std::endl;
+    python << "    rc('font', family='serif')" << std::endl;
+    python << "    rc('font', serif = 'cmr10')" << std::endl;
+    python << "    rc('font', size=12)" << std::endl;
+    python << "    rc('text', usetex=True)" << std::endl;
+    python << "    fig, ((ax1, ax2, ax3, ax4)) = plt.subplots(1,4, sharey=True)" << std::endl;
+    python << "    size = fig.get_size_inches()" << std::endl;
+    python << "    fig.set_size_inches((0.9*size[0],0.7*size[1]))" << std::endl;
+    python << "    plt.subplots_adjust(left=0.08,right=0.97,top=0.88,bottom=0.04,wspace=0.1)" << std::endl;
+    python << "    ax1.set_ylabel(r'$\\Delta$CT value')" << std::endl;
+    python << "    data_min1 = plotData(ax1,Gene,'native','n')" << std::endl;
+    python << "    data_min2 = plotData(ax2,Gene,'primary culture','p')" << std::endl;
+    python << "    data_min3 = plotData(ax3,Gene,'upper fraction','o')" << std::endl;
+    python << "    data_min4 = plotData(ax4,Gene,'lower fraction','u')" << std::endl;
+    if (LegendPositions[i] == "best")
+    {
+      python << "    if (data_min1 > 4):" << std::endl;
+      python << "        ax1.legend(fancybox=True,loc='upper center',ncol=1,fontsize=8,numpoints=1)" << std::endl;
+      python << "    else:" << std::endl;
+      python << "        if (data_min4 > 4):" << std::endl;
+      python << "            ax4.legend(fancybox=True,loc='upper center',ncol=1,fontsize=8,numpoints=1)" << std::endl;
+      python << "        else:" << std::endl;
+      python << "            if (data_min2 > 4):" << std::endl;
+      python << "                ax2.legend(fancybox=True,loc='upper center',ncol=1,fontsize=8,numpoints=1)" << std::endl;
+      python << "            else:" << std::endl;
+      python << "                if (data_min3 > 4):" << std::endl;
+      python << "                    ax3.legend(fancybox=True,loc='upper center',ncol=1,fontsize=8,numpoints=1)" << std::endl;
+      python << "                else:" << std::endl;
+      python << "                    ax1.legend(fancybox=True,loc='best',ncol=1,fontsize=8,numpoints=1)" << std::endl;
+    }
+    else
+    {
+      python << "    ax" << LegendAxs[i] << ".legend(fancybox=True,loc='" << LegendAxPositions[i] << "',ncol=1,fontsize=8,numpoints=1)" << std::endl;
+    }
+    python << "    ax1.set_ylim(ax1.get_ylim()[::-1])" << std::endl;
+    python << "    plt.savefig('output/'+Gene+'.pdf')" << std::endl;
+  }
     
-  auto chosenmRNAs = ChooseIfNeeded(mRNAs,"which plots should be created?",mRNAs,0);
+  auto chosenmRNAs = ChooseIfNeeded(mRNAs,"which plot(s) should be created?",mRNAs,0);
   
-  std::cout << "Create plots for:";
+  std::cout << "Create plot(s) for:";
   for (auto chosenmRNA : chosenmRNAs)
   {
     std::cout << " " << chosenmRNA;
@@ -318,7 +330,9 @@ void pyplot::CreatePlotFile()
   std::cout << std::endl;
   for (auto mRNA : chosenmRNAs)
   {
-    python << "CreateMultiPlot('" << mRNA << "')" << std::endl;
+    std::vector<std::string>::iterator it = std::find(mRNAs.begin(),mRNAs.end(),mRNA);
+    int index = std::distance(mRNAs.begin(), it);
+    python << "CreateMultiPlot_" << index << "('" << mRNA << "')" << std::endl;
   }
   
   python.close();
@@ -330,4 +344,100 @@ void pyplot::plot()
   std::string remove = "del";
   system("python plot.py");
   system((remove+" plot.py").c_str());
+}
+
+void pyplot::setLegendPositions()
+{
+  std::vector<int> _LegendAxs;
+  std::vector<std::string> _LegendAxPositions;
+  for (auto LegendPosition : LegendPositions)
+  {
+    if (LegendPosition == "1b")
+    {
+      _LegendAxs.push_back(1);
+      _LegendAxPositions.push_back("best");
+    }
+    else if (LegendPosition == "2b")
+    {
+      _LegendAxs.push_back(2);
+      _LegendAxPositions.push_back("best");
+    }
+    else if (LegendPosition == "3b")
+    {
+      _LegendAxs.push_back(3);
+      _LegendAxPositions.push_back("best");
+    }
+    else if (LegendPosition == "4b")
+    {
+      _LegendAxs.push_back(4);
+      _LegendAxPositions.push_back("best");
+    }
+    else if (LegendPosition == "1u")
+    {
+      _LegendAxs.push_back(1);
+      _LegendAxPositions.push_back("upper center");
+    }
+    else if (LegendPosition == "2u")
+    {
+      _LegendAxs.push_back(2);
+      _LegendAxPositions.push_back("upper center");
+    }
+    else if (LegendPosition == "3u")
+    {
+      _LegendAxs.push_back(3);
+      _LegendAxPositions.push_back("upper center");
+    }
+    else if (LegendPosition == "4u")
+    {
+      _LegendAxs.push_back(4);
+      _LegendAxPositions.push_back("upper center");
+    }
+    else if (LegendPosition == "1c")
+    {
+      _LegendAxs.push_back(1);
+      _LegendAxPositions.push_back("center");
+    }
+    else if (LegendPosition == "2c")
+    {
+      _LegendAxs.push_back(2);
+      _LegendAxPositions.push_back("center");
+    }
+    else if (LegendPosition == "3c")
+    {
+      _LegendAxs.push_back(3);
+      _LegendAxPositions.push_back("center");
+    }
+    else if (LegendPosition == "4c")
+    {
+      _LegendAxs.push_back(4);
+      _LegendAxPositions.push_back("center");
+    }
+    else if (LegendPosition == "1l")
+    {
+      _LegendAxs.push_back(1);
+      _LegendAxPositions.push_back("lower center");
+    }
+    else if (LegendPosition == "2l")
+    {
+      _LegendAxs.push_back(2);
+      _LegendAxPositions.push_back("lower center");
+    }
+    else if (LegendPosition == "3l")
+    {
+      _LegendAxs.push_back(3);
+      _LegendAxPositions.push_back("lower center");
+    }
+    else if (LegendPosition == "4l")
+    {
+      _LegendAxs.push_back(4);
+      _LegendAxPositions.push_back("lower center");
+    }
+    else
+    {
+      _LegendAxs.push_back(0);
+      _LegendAxPositions.push_back("false");
+    }
+  }
+  LegendAxs = _LegendAxs;
+  LegendAxPositions = _LegendAxPositions;
 }
