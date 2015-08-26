@@ -194,6 +194,7 @@ void pyplot::CreatePlotFile()
   python << "import matplotlib.pyplot as plt" << std::endl;
   python << "from matplotlib.colors import LogNorm" << std::endl;
   python << "import pylab as py" << std::endl;
+  python << "import matplotlib.cm as cm" << std::endl;
 
   python << "def get_xy (name):" << std::endl;
   python << "    data_1 = np.genfromtxt('meta/'+name+'.dat')" << std::endl;
@@ -251,7 +252,14 @@ void pyplot::CreatePlotFile()
   python << "    else :" << std::endl;
   python << "        max3 = max(x_n3)" << std::endl;
   python << "    (x_cell,y_cell,array) = get_xy_cell(Gene,max(max(max1,max2),max3)+2)" << std::endl;
-  python << "    ax.plot(x_cell,y_cell,'dk',label=r'cell lines',clip_on=False,markersize=7)" << std::endl;
+  python << "    for index in range(0,len(x_cell)):" << std::endl;
+  python << "        color_i = cm.CMRmap(0.2+0.7*index/float(5),1)" << std::endl;
+  python << "        if (index >= 5):" << std::endl;
+  python << "            color_i = 'k'" << std::endl;
+  python << "        if (index == 6):" << std::endl;
+  python << "            ax.plot(x_cell[index],y_cell[index],marker='d',color='k',markeredgewidth=1,markeredgecolor=color_i,linestyle='None',label=r'cell lines',clip_on=False,markersize=7)" << std::endl;
+  python << "        else:" << std::endl;
+  python << "            ax.plot(x_cell[index],y_cell[index],marker='d',color='k',markeredgewidth=1,markeredgecolor=color_i,linestyle='None',label=r'',clip_on=False,markersize=7)" << std::endl;
   python << "    for item in array:" << std::endl;
   python << "        ax.scatter(item[1], item[2], marker=r\"$ {} $\".format(item[0]),c='w',edgecolors='none',zorder=10)" << std::endl;
   python << "    ax.axhline(y=21.0,color='k',label='below detection\\nlimit')" << std::endl;
